@@ -1,0 +1,26 @@
+version: '3'
+services:
+    consul:
+        command: -server -bootstrap -advertise ${HOST_IP}
+        image: progrium/consul
+        container_name: consul
+        labels:
+          SERVICE_IGNORE: 'yes'
+        ports:
+          - "8500:8500"
+    registrator:
+        command: "-internal consul://consul:8500"
+        image: gliderlabs/registrator:latest
+        container_name: registrator
+        links:
+          - consul
+        volumes:
+          - "/var/run/docker.sock:/tmp/docker.sock"      
+    product:
+        container_name: product-service
+        image: product:latest
+        logging:
+           driver: json-file
+        ports:
+          - "8090:8090"
+      
