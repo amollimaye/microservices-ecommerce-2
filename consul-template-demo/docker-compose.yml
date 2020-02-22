@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx:
-    build: ./nginx
+    image: microservice_nginx:latest
     container_name: nginx
     links:
       - consul
@@ -27,16 +27,6 @@ services:
       - consul
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock"
-  http:
-    image: nginxdemos/hello:latest
-    labels:
-      SERVICE_80_NAME: http
-      SERVICE_80_CHECK_HTTP: /
-      SERVICE_80_CHECK_INTERVAL: 5s
-      SERVICE_443_IGNORE: 'yes'
-      SERVICE_TAGS: production
-    ports:
-      - "80"
   product:
     image: product:latest
     logging:
@@ -49,3 +39,27 @@ services:
       SERVICE_TAGS: production
     ports:
       - "8090"
+  images:
+    image: images:latest
+    logging:
+       driver: json-file
+    labels:
+      SERVICE_80_NAME: images
+      SERVICE_80_CHECK_HTTP: /
+      SERVICE_80_CHECK_INTERVAL: 5s
+      SERVICE_443_IGNORE: 'yes'
+      SERVICE_TAGS: production
+    ports:
+      - "8070"
+  ecommerce:
+    image: ecommerce:latest
+    logging:
+       driver: json-file
+    labels:
+      SERVICE_80_NAME: ecommerce
+      SERVICE_80_CHECK_HTTP: /
+      SERVICE_80_CHECK_INTERVAL: 5s
+      SERVICE_443_IGNORE: 'yes'
+      SERVICE_TAGS: production
+    ports:
+      - "8070"

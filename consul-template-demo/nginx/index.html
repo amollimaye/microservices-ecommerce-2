@@ -15,7 +15,7 @@
 
 <h3>Discovered Services AMOL</h3>
 {{range services}} {{$name := .Name}} {{range $tag, $service := service .Name | byTag}} {{if eq $tag "production"}}
-<a href="http://127.0.0.1:8500/ui/#/dc1/services/{{$name}}">{{$name}}</a><br>
+<a href="http://192.168.99.100:8500/ui/#/dc1/services/{{$name}}">{{$name}}</a><br>
 {{end}} {{end}} {{end}}
 
 

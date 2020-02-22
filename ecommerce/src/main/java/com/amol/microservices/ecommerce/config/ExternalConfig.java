@@ -14,7 +14,7 @@ public class ExternalConfig {
     //To add this property in consul UI, add it as config/ecommerce-service/useImages
     //and add its value as true
 
-    @Value("${useImages}")
+    @Value("${useImages:true}")
     private String useImages;
 
     public boolean getUseImages() {
