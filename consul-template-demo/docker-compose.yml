@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx:
-    image: microservice_nginx:latest
+    image: nginx:latest
     container_name: nginx
     links:
       - consul
@@ -37,8 +37,6 @@ services:
       SERVICE_80_CHECK_INTERVAL: 5s
       SERVICE_443_IGNORE: 'yes'
       SERVICE_TAGS: production
-    ports:
-      - "8090"
   images:
     image: images:latest
     logging:
@@ -49,8 +47,6 @@ services:
       SERVICE_80_CHECK_INTERVAL: 5s
       SERVICE_443_IGNORE: 'yes'
       SERVICE_TAGS: production
-    ports:
-      - "8070"
   ecommerce:
     image: ecommerce:latest
     logging:
@@ -61,5 +57,3 @@ services:
       SERVICE_80_CHECK_INTERVAL: 5s
       SERVICE_443_IGNORE: 'yes'
       SERVICE_TAGS: production
-    ports:
-      - "8070"
