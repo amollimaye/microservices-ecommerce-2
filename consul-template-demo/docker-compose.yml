@@ -6,7 +6,7 @@ services:
     links:
       - consul
     ports:
-      - "8080:80"
+      - "8080:8080"
     labels:
       SERVICE_IGNORE: 'yes'
   consul:
@@ -32,28 +32,25 @@ services:
     logging:
        driver: json-file
     labels:
-      SERVICE_80_NAME: product
-      SERVICE_80_CHECK_HTTP: /
-      SERVICE_80_CHECK_INTERVAL: 5s
-      SERVICE_443_IGNORE: 'yes'
-      SERVICE_TAGS: production
+      SERVICE_IGNORE: 'yes'
   images:
     image: images:latest
     logging:
        driver: json-file
     labels:
-      SERVICE_80_NAME: images
-      SERVICE_80_CHECK_HTTP: /
-      SERVICE_80_CHECK_INTERVAL: 5s
-      SERVICE_443_IGNORE: 'yes'
-      SERVICE_TAGS: production
+      SERVICE_IGNORE: 'yes'
   ecommerce:
     image: ecommerce:latest
     logging:
        driver: json-file
     labels:
-      SERVICE_80_NAME: ecommerce
-      SERVICE_80_CHECK_HTTP: /
-      SERVICE_80_CHECK_INTERVAL: 5s
-      SERVICE_443_IGNORE: 'yes'
-      SERVICE_TAGS: production
+      SERVICE_IGNORE: 'yes'
+  zipkin:
+    image: openzipkin/zipkin
+    logging:
+       driver: json-file
+    labels:
+      SERVICE_IGNORE: 'yes'
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411      
