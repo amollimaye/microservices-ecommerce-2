@@ -59,7 +59,6 @@ The following software needs to be installed:
     6c4646c4d954        progrium/consul     "/bin/start -server …"   9 seconds ago       Up 9 seconds        53/tcp, 53/udp, 8300-8302/tcp, 8400/tcp, 8301-8302/udp,0.0.0.0:8500->8500/tcp   consul
     9a1c011c6bbd        images:latest       "java -Djava.securit…"   9 seconds ago       Up 9 seconds        8090/tcp                                                                         microservices_images_1
     ad895270cd67        product:latest      "java -Djava.securit…"   9 seconds ago       Up 9 seconds        8090/tcp                                                                         microservices_product_1
-```
 
 ## Running the demo
 
@@ -68,10 +67,11 @@ NGINX is listening on port 80 on your Docker Host, and runs Consul Template. Con
 So now just go to `http://<HOST-IP>:8500` (Note: Docker for Mac runs on IP address 127.0.0.1) . You will see Consul UI page showing the list of all registered services.
 
 Below command will show the dynamically updated nginx configuration
+
 ```
 $ docker exec nginx nginx -T
 
-# configuration file /etc/nginx/conf.d/app.conf:
+ configuration file /etc/nginx/conf.d/app.conf:
 
 upstream consul {
     zone upstream-consul 64k;
