@@ -163,7 +163,7 @@ upstream ecommerceApp {
 Scale down using below command.
 
 ```
-$ docker-compose scale ecommerce=3
+$ docker-compose scale ecommerce=2
 ```
 
 All the changes should be automatically reflected in the NGINX config file (/etc/nginx/conf.d/app.conf) inside the NGINX container.
@@ -175,8 +175,22 @@ $ docker stop microservices_ecommerce_2
 microservices_ecommerce_2
 ```
 
-On the Consul UI page (http://<HOST-IP>:8500/ui/#/dc1/services/ecommerceApp), you will observe the change and the container removed. Also the NGINX config file (`/etc/nginx/conf.d/app.conf`) will have just 2 server entries now indicating that the 3rd server entry corresponding to the container which was stopped was removed automatically.
+On the Consul UI page (<HOST-IP>:8500/ui/#/dc1/services/ecommerceApp), you will observe the change and the container removed. Also the NGINX config file (`/etc/nginx/conf.d/app.conf`) will have just 2 server entries now indicating that the 3rd server entry corresponding to the container which was stopped was removed automatically.
 
 ## Windows issues and solutions:
 
+I experienced this issue on windows home edition.
+nginx docker instance starts, but the nginx and consul template service doesn't start.
+For this, we need to run the start commands for these 2 services manually as follows:
 
+Step 1: Start docker terminal, go to the microservices folder.
+Step 2: run below commands
+```
+docker-compose exec -d nginx usr/sbin/nginx -c nginx.conf -g "daemon off;"
+```
+```
+docker-compose exec -d nginx consul-template \
+    -consul-addr consul:8500 \
+    -template "etc/consul-templates/nginx.conf:etc/nginx/conf.d/app.conf:service nginx reload" \
+    -template "etc/consul-templates/index.html:usr/share/nginx/html/index.html"
+```
