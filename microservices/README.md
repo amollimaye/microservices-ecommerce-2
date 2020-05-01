@@ -1,4 +1,7 @@
-# Demo to show Dynamic Reconfiguration of Upstream servers with open source NGINX using Consul & Consul-Template
+This code is derived from NGINX demo code to show Dynamic Reconfiguration of Upstream servers with open source NGINX using Consul & Consul-Template
+
+Code for blog: https://github.com/amollimaye/microservices-ecommerce-2
+
 
 This demo shows NGINX being used in conjuction with Consul, a popular Service discovery platform and Consul-Template, a generic template rendering tool that provides a convenient way to populate values from Consul into the file system using a daemon.
 

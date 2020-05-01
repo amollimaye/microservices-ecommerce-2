@@ -24,10 +24,10 @@ hs_err_pid*
 
 # Project specific files
 .idea/
-*/.idea/
-*/.mvn/
-*/HELP.md
-*/*.iml
-*/mvnw
-*/mvnw.cmd
-*/target/
+microservices/*/.idea/
+microservices/*/.mvn/
+microservices/*/HELP.md
+/*.iml
+microservices/*/mvnw
+microservices/*/mvnw.cmd
+microservices/*/target/

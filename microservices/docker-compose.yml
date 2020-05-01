@@ -19,14 +19,6 @@ services:
       SERVICE_IGNORE: 'yes'
     ports:
       - "8500:8500"
-  registrator:
-    command: "-internal consul://consul:8500"
-    image: gliderlabs/registrator:latest
-    container_name: registrator
-    links:
-      - consul
-    volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock"
   product:
     image: product:latest
     logging:
@@ -45,12 +37,3 @@ services:
        driver: json-file
     labels:
       SERVICE_IGNORE: 'yes'
-  zipkin:
-    image: openzipkin/zipkin
-    logging:
-       driver: json-file
-    labels:
-      SERVICE_IGNORE: 'yes'
-    ports:
-      # Port used for the Zipkin UI and HTTP Api
-      - 9411:9411      
