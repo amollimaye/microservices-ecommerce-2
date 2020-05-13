@@ -183,8 +183,8 @@ I experienced this issue on windows home edition.
 nginx docker instance starts, but the nginx and consul template service doesn't start.
 For this, we need to run the start commands for these 2 services manually as follows:
 
-Step 1: Start docker terminal, go to the microservices folder.
-Step 2: run below commands
+Step 1: Start docker terminal, go to the microservices folder and run below commands:
+
 ```
 docker-compose exec -d nginx usr/sbin/nginx -c nginx.conf -g "daemon off;"
 ```
