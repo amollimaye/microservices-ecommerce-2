@@ -7,33 +7,23 @@ services:
       - consul
     ports:
       - "8080:8080"
-    labels:
-      SERVICE_IGNORE: 'yes'
   consul:
     command: -server -bootstrap -advertise ${HOST_IP}
     image: progrium/consul
     container_name: consul
     logging:
         driver: json-file
-    labels:
-      SERVICE_IGNORE: 'yes'
     ports:
       - "8500:8500"
   product:
     image: product:latest
     logging:
        driver: json-file
-    labels:
-      SERVICE_IGNORE: 'yes'
   images:
     image: images:latest
     logging:
        driver: json-file
-    labels:
-      SERVICE_IGNORE: 'yes'
   ecommerce:
     image: ecommerce:latest
     logging:
        driver: json-file
-    labels:
-      SERVICE_IGNORE: 'yes'
