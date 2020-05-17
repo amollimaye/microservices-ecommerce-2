@@ -13,10 +13,7 @@
 <body>
 <h1>Welcome to nginx!</h1>
 
-<h3>Discovered Services AMOL</h3>
-{{range services}} {{$name := .Name}} {{range $tag, $service := service .Name | byTag}} {{if eq $tag "production"}}
-<a href="http://192.168.99.100:8500/ui/#/dc1/services/{{$name}}">{{$name}}</a><br>
-{{end}} {{end}} {{end}}
+<h3>You've done it !</h3>
 
 
 <p>For online documentation and support please refer to
