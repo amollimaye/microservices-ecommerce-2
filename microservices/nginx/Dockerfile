@@ -7,7 +7,7 @@ RUN apt-get update \
 ARG CONSUL_TEMPLATE_VERSION=0.19.5
 ENV CT_URL https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip
 RUN curl -O $CT_URL
-RUN unzip consul-template_0.19.5_linux_amd64.zip -d /usr/local/bin
+RUN unzip consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip -d /usr/local/bin
 
 ADD nginx.service /etc/service/nginx/run
 ADD consul-template.service /etc/service/consul-template/run
