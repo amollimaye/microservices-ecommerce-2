@@ -24,13 +24,13 @@ spec:
                 name: ecommerce-config
           readinessProbe:
             httpGet:
-              path: /ecommerce-service/actuator/health/readiness
+              path: /ecommerce-service/actuator/health
               port: 8090
             initialDelaySeconds: 20
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /ecommerce-service/actuator/health/liveness
+              path: /ecommerce-service/actuator/health
               port: 8090
             initialDelaySeconds: 30
             periodSeconds: 15

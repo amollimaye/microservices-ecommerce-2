@@ -1,67 +1,128 @@
 # microservices-ecommerce-2
 
-Phase 1 modernization for Kubernetes-native runtime.
+Phase 1 modernization of the sample ecommerce microservices project to a Kubernetes-native local runtime.
 
-## Architecture
+## Prerequisites
 
-Browser -> Kubernetes Ingress -> Kubernetes Services -> Pods
+Install and verify these before running the project:
 
-Services:
+* Java 17
+* Maven 3.8+
+* Docker Desktop
+* Kubernetes enabled in Docker Desktop
+* `kubectl` available in your terminal
 
-* ecommerce
-* product
-* images
+Quick checks:
 
-## Runtime
+```powershell
+java -version
+mvn -version
+docker version
+kubectl version --client
+kubectl get nodes
+```
 
-This project no longer requires the legacy runtime stack:
+Expected:
 
-* nginx
-* legacy service registry
-* template-based reverse proxy configuration
-* HOST_IP routing
-* docker-compose service discovery
+* Docker Desktop is running
+* Kubernetes is enabled
+* `kubectl get nodes` shows the local Docker Desktop node as `Ready`
 
-Service discovery now uses Kubernetes DNS:
+## Local Setup
+
+1. Clone or download the repository.
+2. Open a terminal in the project root:
+
+```powershell
+cd C:\git\microservices-ecommerce-2
+```
+
+3. Confirm the Kubernetes manifests are present under `k8s\`.
+4. Confirm the helper script exists:
+
+```powershell
+dir start.bat
+```
+
+## How To Run Locally
+
+Use the provided startup script from the repository root:
+
+```powershell
+start.bat
+```
+
+What `start.bat` does:
+
+* removes old Kubernetes resources for this app
+* removes stale local Docker images for this app
+* builds all three Spring Boot services
+* builds Docker images with explicit `v2` tags
+* deploys the Kubernetes manifests
+* waits for the three deployments to become ready
+* prints pod, service, and ingress status
+
+## Services
+
+The application runs as three services inside Kubernetes:
+
+* `ecommerce`
+* `product`
+* `images`
+
+Internal service discovery uses Kubernetes DNS:
 
 * `http://ecommerce-service:8090`
 * `http://product-service:8090`
 * `http://images-service:8090`
 
-## Build Images
+## Local Access
 
-```bash
-cd microservices/product && mvn clean package && docker build -t product-service:latest .
-cd ../images && mvn clean package && docker build -t images:latest .
-cd ../ecommerce && mvn clean package && docker build -t ecommerce:latest .
+For Docker Desktop local access, use:
+
+```text
+http://localhost:8090/ecommerce-service/ecommerceProducts
 ```
 
-## Deploy To Kubernetes
+This works because `ecommerce-service` is exposed as a Kubernetes `LoadBalancer` service on port `8090`.
 
-```bash
-kubectl apply -f k8s/namespace.yaml
-kubectl apply -f k8s/product/
-kubectl apply -f k8s/images/
-kubectl apply -f k8s/ecommerce/
-kubectl apply -f k8s/ingress/
-```
+## Verification
 
-## Routes
+Check that everything is running:
 
-* `/ecommerceApp` -> `ecommerce-service`
-* `/product` -> `product-service`
-* `/images` -> `images-service`
-
-The ingress rewrites the external prefixes to the existing Spring application paths so the REST APIs remain unchanged.
-
-## Verify
-
-```bash
+```powershell
 kubectl get pods -n ecommerce
 kubectl get svc -n ecommerce
 kubectl get ingress -n ecommerce
-kubectl describe ingress ecommerce-ingress -n ecommerce
-kubectl port-forward -n ecommerce svc/ecommerce-service 8090:8090
-curl http://localhost:8090/ecommerce-service/ecommerceProducts
-curl http://<INGRESS-HOST>/ecommerceApp/ecommerce-service/ecommerceProducts
 ```
+
+Expected:
+
+* `product`, `images`, and `ecommerce` pods are `1/1 Running`
+* `ecommerce-service` is exposed on port `8090`
+
+Test the main API:
+
+```powershell
+curl http://localhost:8090/ecommerce-service/ecommerceProducts
+```
+
+Useful log commands:
+
+```powershell
+kubectl logs -n ecommerce deploy/product
+kubectl logs -n ecommerce deploy/images
+kubectl logs -n ecommerce deploy/ecommerce
+```
+
+## Notes
+
+This project no longer uses:
+
+* `nginx`
+* `consul`
+* `consul-template`
+* `HOST_IP`
+* `docker-compose` runtime routing
+
+The `Ingress` manifest is still present as part of the Phase 1 Kubernetes migration, but on a default Docker Desktop setup the stable local endpoint for this repo is the `LoadBalancer` service URL on `localhost:8090`.

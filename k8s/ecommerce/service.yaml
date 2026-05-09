@@ -4,7 +4,7 @@ metadata:
   name: ecommerce-service
   namespace: ecommerce
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: ecommerce
   ports:
