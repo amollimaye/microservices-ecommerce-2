@@ -13,7 +13,7 @@ services:
       - microservices-network
 
   consul:
-    image: consul:latest
+    image: hashicorp/consul:latest
     container_name: consul
     command: agent -server -ui -bootstrap-expect=1 -client=0.0.0.0
     ports:
