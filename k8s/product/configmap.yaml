@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-config
+  namespace: ecommerce
+data:
+  SERVER_PORT: "8090"
+  SERVER_SERVLET_CONTEXT_PATH: "/product-service"
+  SPRING_H2_CONSOLE_ENABLED: "true"
+  SPRING_DATASOURCE_URL: "jdbc:h2:mem:productsdb"
+  SPRING_JPA_DATABASE_PLATFORM: "org.hibernate.dialect.H2Dialect"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info"
+  MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
+  NAME: "Reading from file"

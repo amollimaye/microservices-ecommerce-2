@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: images-config
+  namespace: ecommerce
+data:
+  SERVER_PORT: "8090"
+  SERVER_SERVLET_CONTEXT_PATH: "/image-service"
+  SPRING_H2_CONSOLE_ENABLED: "true"
+  SPRING_DATASOURCE_URL: "jdbc:h2:mem:imagesdb"
+  SPRING_DATASOURCE_DRIVERCLASSNAME: "org.h2.Driver"
+  SPRING_DATASOURCE_USERNAME: "sa"
+  SPRING_JPA_DATABASE_PLATFORM: "org.hibernate.dialect.H2Dialect"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "none"
+  USE_IMAGES: "true"
+  MANAGEMENT_SECURITY_ENABLED: "false"
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info"
+  MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"

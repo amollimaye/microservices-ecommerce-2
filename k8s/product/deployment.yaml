@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product
+  namespace: ecommerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+        - name: product
+          image: product-service:v2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8090
+          envFrom:
+            - configMapRef:
+                name: product-config
+          readinessProbe:
+            httpGet:
+              path: /product-service/actuator/health/readiness
+              port: 8090
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /product-service/actuator/health/liveness
+              port: 8090
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

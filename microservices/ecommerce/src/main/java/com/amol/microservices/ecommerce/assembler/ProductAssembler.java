@@ -23,26 +23,24 @@ public class ProductAssembler {
     @Autowired
     private ExternalConfig externalConfig;
 
-    private static final String PRODUCT_SERVICE_ID = "productApp";
     private static final String PRODUCT_SERVICE_ENDPOINT = "/product-service/products";
 
-    private static final String IMAGE_SERVICE_ID = "imageApp";
     private static final String IMAGE_SERVICE_ENDPOINT = "/image-service/images";
 
     public List<EcommerceProduct> getEcommerceProducts(){
         ResponseEntity<ProductResponse> productResponse = restTemplate.exchange(
-                getServiceURL(PRODUCT_SERVICE_ID,PRODUCT_SERVICE_ENDPOINT),
+                getServiceURL(externalConfig.getProductServiceBaseUrl(), PRODUCT_SERVICE_ENDPOINT),
                 HttpMethod.GET,null,ProductResponse.class);
         ResponseEntity<ImageResponse> imageResponse = null;
         if(externalConfig.getUseImages()) {
-            imageResponse = restTemplate.exchange(getServiceURL(IMAGE_SERVICE_ID, IMAGE_SERVICE_ENDPOINT),
+            imageResponse = restTemplate.exchange(getServiceURL(externalConfig.getImagesServiceBaseUrl(), IMAGE_SERVICE_ENDPOINT),
                     HttpMethod.GET, null, ImageResponse.class);
         }
         return mergeProductData(productResponse,imageResponse);
     }
 
-    private String getServiceURL(String serviceId,String serviceEndpoint){
-        return new StringBuffer("http://").append(serviceId)
+    private String getServiceURL(String serviceBaseUrl, String serviceEndpoint){
+        return new StringBuilder(serviceBaseUrl)
                 .append(serviceEndpoint).toString();
     }
 

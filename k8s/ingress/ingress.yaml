@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecommerce-ingress
+  namespace: ecommerce
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /ecommerceApp(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ecommerce-service
+                port:
+                  number: 8090
+          - path: /product(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: product-service
+                port:
+                  number: 8090
+          - path: /images(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: images-service
+                port:
+                  number: 8090
