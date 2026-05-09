@@ -1,19 +1,76 @@
-version: '3'
 services:
   nginx:
-    image: nginx:latest
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     container_name: nginx
     ports:
       - "8080:8080"
+    depends_on:
+      - consul
+    networks:
+      - microservices-network
+    environment:
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+
   consul:
-    command: -server -bootstrap -advertise ${HOST_IP}
-    image: progrium/consul
+    image: hashicorp/consul:latest
     container_name: consul
+    command: agent -server -ui -bootstrap-expect=1 -client=0.0.0.0
     ports:
       - "8500:8500"
+      - "8600:8600/udp"
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    networks:
+      - microservices-network
+
   product:
     image: product:latest
+    container_name: product
+    expose:
+      - "8090"
+    environment:
+      - SPRING_CLOUD_CONSUL_HOST=consul
+      - SPRING_CLOUD_CONSUL_PORT=8500
+      - SPRING_APPLICATION_NAME=productApp
+      - SERVER_PORT=8090
+    depends_on:
+      - consul
+    networks:
+      - microservices-network
+
   images:
     image: images:latest
+    container_name: images
+    expose:
+      - "8090"
+    environment:
+      - SPRING_CLOUD_CONSUL_HOST=consul
+      - SPRING_CLOUD_CONSUL_PORT=8500
+      - SPRING_APPLICATION_NAME=imageApp
+      - SERVER_PORT=8090
+    depends_on:
+      - consul
+    networks:
+      - microservices-network
+
   ecommerce:
     image: ecommerce:latest
+    container_name: ecommerce
+    expose:
+      - "8090"
+    environment:
+      - SPRING_CLOUD_CONSUL_HOST=consul
+      - SPRING_CLOUD_CONSUL_PORT=8500
+      - SPRING_APPLICATION_NAME=ecommerceApp
+      - SERVER_PORT=8090
+    depends_on:
+      - consul
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
